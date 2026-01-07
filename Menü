@@ -1,25 +1,135 @@
-import pygame
-from menu import menu
+import tkinter as tk
+import sys
 
-pygame.init()
+# -----------------------------
+# Main window
+# -----------------------------
+root = tk.Tk()
+root.title("Need for Speed: Erlen Edition")
+root.geometry("1000x600")
+root.configure(bg="#0a0a0a")
 
-menu()  # Show menu first
+# -----------------------------
+# Title
+# -----------------------------
+title = tk.Label(
+    root,
+    text="NEED FOR SPEED\nERLEN EDITION",
+    fg="white",
+    bg="#0a0a0a",
+    font=("Arial Black", 32),
+    justify="center"
+)
+title.pack(pady=60)
 
-# Placeholder for actual game
-screen = pygame.display.set_mode((1000, 600))
-pygame.display.set_caption("Need for Speed: Erlen Edition")
+# -----------------------------
+# Button functions
+# -----------------------------
+def start_game():
+    # Entferne alte Level-Buttons, falls vorhanden
+    for widget in level_frame.winfo_children():
+        widget.destroy()
 
-clock = pygame.time.Clock()
-running = True
+    # Erstelle neue Buttons für die Städte
+    cities = ["Sarnen", "Emmenbrücke", "Luzern", "Zürich"]
+    for i, city in enumerate(cities):
+        city_btn = tk.Button(
+            level_frame,
+            text=city,
+            bg="#c82828",
+            activebackground="#ff4444",
+            fg="white",
+            font=("Arial", 16),
+            width=15,
+            height=2,
+            bd=0,
+            command=lambda c=city: select_city(c)
+        )
+        city_btn.grid(row=0, column=i, padx=10)
 
-while running:
-    screen.fill((0, 0, 0))
+def select_city(city_name):
+    print(f"Stadt ausgewählt: {city_name}")
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+def open_garage():
+    print("Garage geöffnet")
 
-    pygame.display.update()
-    clock.tick(60)
+def open_settings():
+    print("Einstellungen geöffnet")
 
-pygame.quit()
+def quit_game():
+    root.destroy()
+    sys.exit()
+
+# -----------------------------
+# Button container (middle)
+# -----------------------------
+button_frame = tk.Frame(root, bg="#0a0a0a")
+button_frame.pack(pady=20)
+
+# -----------------------------
+# Buttons (rectangles)
+# -----------------------------
+button_style = {
+    "font": ("Arial", 18),
+    "width": 18,
+    "height": 2,
+    "fg": "white",
+    "bd": 0
+}
+
+play_btn = tk.Button(
+    button_frame,
+    text="SPIELEN",
+    bg="#c82828",
+    activebackground="#ff4444",
+    command=start_game,
+    **button_style
+)
+play_btn.grid(row=0, column=0, padx=15)
+
+garage_btn = tk.Button(
+    button_frame,
+    text="GARAGE",
+    bg="#282828",
+    activebackground="#444444",
+    command=open_garage,
+    **button_style
+)
+garage_btn.grid(row=0, column=1, padx=15)
+
+settings_btn = tk.Button(
+    button_frame,
+    text="EINSTELLUNGEN",
+    bg="#282828",
+    activebackground="#444444",
+    command=open_settings,
+    **button_style
+)
+settings_btn.grid(row=0, column=2, padx=15)
+
+# -----------------------------
+# Level/City buttons (appear after clicking "SPIELEN")
+# -----------------------------
+level_frame = tk.Frame(root, bg="#0a0a0a")
+level_frame.pack(pady=20)
+
+# -----------------------------
+# Quit button (bottom)
+# -----------------------------
+quit_btn = tk.Button(
+    root,
+    text="QUIT",
+    font=("Arial", 14),
+    width=10,
+    bg="#1e1e1e",
+    fg="white",
+    activebackground="#444444",
+    command=quit_game,
+    bd=0
+)
+quit_btn.pack(side="bottom", pady=30)
+
+# -----------------------------
+# Run
+# -----------------------------
+root.mainloop()
