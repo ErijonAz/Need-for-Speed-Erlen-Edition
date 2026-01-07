@@ -1,0 +1,25 @@
+import pygame
+from menu import menu
+
+pygame.init()
+
+menu()  # Show menu first
+
+# Placeholder for actual game
+screen = pygame.display.set_mode((1000, 600))
+pygame.display.set_caption("Need for Speed: Erlen Edition")
+
+clock = pygame.time.Clock()
+running = True
+
+while running:
+    screen.fill((0, 0, 0))
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    pygame.display.update()
+    clock.tick(60)
+
+pygame.quit()
