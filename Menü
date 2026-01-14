@@ -26,15 +26,33 @@ title.pack(pady=60)
 # Button functions
 # -----------------------------
 def start_game():
-    # Entferne alte Level-Buttons, falls vorhanden
-    for widget in level_frame.winfo_children():
-        widget.destroy()
+    # Hauptfenster ausblenden
+    root.withdraw()
 
-    # Erstelle neue Buttons für die Städte
+    # Neues Fenster erstellen
+    game_window = tk.Toplevel()
+    game_window.title("Städte auswählen")
+    game_window.geometry("1000x600")
+    game_window.configure(bg="#0a0a0a")
+
+    # Titel im neuen Fenster
+    tk.Label(
+        game_window,
+        text="STADT AUSWÄHLEN",
+        fg="white",
+        bg="#0a0a0a",
+        font=("Arial Black", 28)
+    ).pack(pady=40)
+
+    # Frame für Städte
+    city_frame = tk.Frame(game_window, bg="#0a0a0a")
+    city_frame.pack(pady=20)
+
     cities = ["Sarnen", "Emmenbrücke", "Luzern", "Zürich"]
+
     for i, city in enumerate(cities):
-        city_btn = tk.Button(
-            level_frame,
+        btn = tk.Button(
+            city_frame,
             text=city,
             bg="#c82828",
             activebackground="#ff4444",
@@ -45,29 +63,50 @@ def start_game():
             bd=0,
             command=lambda c=city: select_city(c)
         )
-        city_btn.grid(row=0, column=i, padx=10)
+        btn.grid(row=0, column=i, padx=15)
+
+    # Zurück-Button
+    tk.Button(
+        game_window,
+        text="ZURÜCK",
+        font=("Arial", 14),
+        bg="#282828",
+        fg="white",
+        width=12,
+        bd=0,
+        command=lambda: close_game_window(game_window)
+    ).pack(pady=40)
+
+
+def close_game_window(window):
+    window.destroy()
+    root.deiconify()
+
 
 def select_city(city_name):
     print(f"Stadt ausgewählt: {city_name}")
 
+
 def open_garage():
     print("Garage geöffnet")
 
+
 def open_settings():
     print("Einstellungen geöffnet")
+
 
 def quit_game():
     root.destroy()
     sys.exit()
 
 # -----------------------------
-# Button container (middle)
+# Button container
 # -----------------------------
 button_frame = tk.Frame(root, bg="#0a0a0a")
 button_frame.pack(pady=20)
 
 # -----------------------------
-# Buttons (rectangles)
+# Buttons
 # -----------------------------
 button_style = {
     "font": ("Arial", 18),
@@ -79,7 +118,7 @@ button_style = {
 
 play_btn = tk.Button(
     button_frame,
-    text="SPIELEN",
+    text="STARTEN",
     bg="#c82828",
     activebackground="#ff4444",
     command=start_game,
@@ -108,13 +147,7 @@ settings_btn = tk.Button(
 settings_btn.grid(row=0, column=2, padx=15)
 
 # -----------------------------
-# Level/City buttons (appear after clicking "SPIELEN")
-# -----------------------------
-level_frame = tk.Frame(root, bg="#0a0a0a")
-level_frame.pack(pady=20)
-
-# -----------------------------
-# Quit button (bottom)
+# Quit button
 # -----------------------------
 quit_btn = tk.Button(
     root,
@@ -133,3 +166,4 @@ quit_btn.pack(side="bottom", pady=30)
 # Run
 # -----------------------------
 root.mainloop()
+
